@@ -1,0 +1,94 @@
+body
+{
+	font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
+	color: #73879C;
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 1.471;
+}
+
+.no-border-radius, .list-group.no-border-radius > .list-group-item
+{
+	border-radius: 0px !important;
+}
+
+a:hover
+{
+	/* padding-left: 1px; */
+}
+
+a:hover
+{
+	text-decoration: none;
+}
+
+/* frame css */
+
+.nowrap
+{
+	white-space: nowrap;
+}
+
+.frame-style
+{
+	box-shadow: 0px 0px 5px #C0C0C0;
+}
+
+/* end frame css */
+
+.no-border
+{
+	border: 0 !important;
+}
+
+.no-padding
+{
+	padding: 0px;
+}
+
+.no-margin
+{
+	margin: 0px;
+}
+
+.inner-content
+{
+	padding: 15px;
+	min-height: calc(100vh - 51px);
+}
+
+.top-15
+{
+	margin-top: 15px;
+}
+
+.top-25
+{
+	margin-top: 25px;
+}
+
+.table tbody tr td
+{
+	vertical-align: middle;
+}
+
+.navbar-nav > li > .dropdown-menu
+{
+	margin-top: 2px;
+}
+
+.dropdown button .glyphicon:first-child:after
+{
+	content: "\2009";
+}
+
+.dropdown-menu li a .glyphicon:first-child:after
+{
+	content: "\2009";
+}
+
+.breadcrumb > li + li:before
+{
+	content:"\00bb";
+	color: inherit;
+}

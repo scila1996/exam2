@@ -3,35 +3,33 @@
 use System\Core\Config;
 use System\Libraries\Router\RouteCollector;
 
-Config::$route->get('/test', ["TestCtrl"]);
+Config::$route->get('/test', ['TestCtrl']);
+Config::$route->get('/create-data', ['TestCtrl']);
 
-Config::$route->get('{:asset/[^\?]+}', ["HomeCtrl", "asset"]);
 
-Config::$route->filter('login', ["MiddleWare", "validLogin"]);
-Config::$route->filter('auth', ["MiddleWare", "requireLogin"]);
+// Asset Libs
+Config::$route->get('/libs/{:.+\.\w+$}', ['Asset']);
 
-// Route for login page
-Config::$route->group(['before' => 'login'], function (RouteCollector $router) {
-    $router->get('/login', ["LoginCtrl", "index"]);
-    $router->post('/login', ["LoginCtrl", "submitForm"]);
+// MiddleWare
+Config::$route->filter('login', ['Users\\MiddleWare', 'requireLogin']);
+Config::$route->filter('valid', ['Users\\MiddleWare', 'validLogin']);
+
+// Login page
+Config::$route->group(['before' => 'valid'], function(RouteCollector $routers) {
+    // GET
+    $routers->get('/user/login', ['Users\\LoginCtrl']);
+    // POST
+    $routers->post('/user/login', ['Users\\LoginCtrl', 'doPOST']);
 });
 
-Config::$route->group(['before' => 'auth'], function (RouteCollector $router) {
+Config::$route->group(['before' => 'login'], function(RouteCollector $routers) {
+    $routers->get('/', ['Users\\HomeCtrl']);
 
-    // Home
-    $router->any('/', ["HomeCtrl"]);
+    $routers->get('/user/files', ['Users\\FileCtrl']);
 
-    // Lands
-    $router->any('/view/lands', ["HomeCtrl", "viewArticle"]);
-    $router->get('/ajax/lands', ["HomeCtrl", "ajaxLands"]);
+    $routers->any('/user/category/{:\d+}/create/', ['Users\\FileCtrl', 'createCategory']);
 
-    // Members
-    $router->any('/view/members', ["HomeCtrl", "viewMembers"]);
-    $router->get('/ajax/members', ["HomeCtrl", "ajaxMembers"]);
+    $routers->get('/user/files/rest/{:\w+}', ['Users\\FileCtrl', 'rest']);
 
-    // Update
-    $router->get('/update', ["HomeCtrl", "updateArticle"]);
-    $router->post('/update', ["HomeCtrl", "processUpdateArticle"]);
-
-    $router->any('/logout', ["LoginCtrl", "logout"]);
+    $routers->get('/user/logout', ['Users\\LoginCtrl', 'logout']);
 });
