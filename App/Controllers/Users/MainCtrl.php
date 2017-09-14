@@ -22,6 +22,8 @@ class MainCtrl extends Controller
         $this->view['user'] = $this->session->get(Session::USER_AUTH);
         $this->view['title'] = 'Dashboard';
         $this->view['category'] = 'Home';
+        $this->view['message'] = null;
+        $this->view['content'] = 'no content';
         $this->view['url'] = (object) [
                     'home' => '/',
                     'files' => '/user/files',

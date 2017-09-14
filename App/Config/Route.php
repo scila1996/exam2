@@ -4,8 +4,6 @@ use System\Core\Config;
 use System\Libraries\Router\RouteCollector;
 
 Config::$route->get('/test', ['TestCtrl']);
-Config::$route->get('/create-data', ['TestCtrl']);
-
 
 // Asset Libs
 Config::$route->get('/libs/{:.+\.\w+$}', ['Asset']);
@@ -27,9 +25,13 @@ Config::$route->group(['before' => 'login'], function(RouteCollector $routers) {
 
     $routers->get('/user/files', ['Users\\FileCtrl']);
 
-    $routers->any('/user/category/{:\d+}/create/', ['Users\\FileCtrl', 'createCategory']);
+    // GET tree data
+    $routers->get('/user/files/{id:0}/{action:get}/tree', ['Users\\FileCtrl', 'category']);
 
-    $routers->get('/user/files/rest/{:\w+}', ['Users\\FileCtrl', 'rest']);
+    // Category manage
+    $routers->any('/user/category/{id:\d+}/{action:create|edit|delete}', ['Users\\FileCtrl', 'category']);
+
+    // Exam manage
 
     $routers->get('/user/logout', ['Users\\LoginCtrl', 'logout']);
 });

@@ -1629,6 +1629,7 @@ class Builder
     public function delete()
     {
         $this->compile = __FUNCTION__;
+        return $this;
     }
 
     /**
@@ -1639,6 +1640,16 @@ class Builder
     public function newQuery()
     {
         return new static($this->grammar);
+    }
+
+    /**
+     * Clone Query Object
+     * 
+     * @return self
+     */
+    public function copyQuery()
+    {
+        return clone $this;
     }
 
     /**

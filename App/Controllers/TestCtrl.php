@@ -9,7 +9,7 @@ class TestCtrl extends Controller
 
     public function index()
     {
-        return $this->request->getUri();
+        return $this->response->withJson($this->request->getQueryParams());
     }
 
 }

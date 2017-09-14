@@ -65,7 +65,16 @@
                             <h4> <?= $category ?> </h4>
                             <hr />
                         </div>
-                        <?= $content ?>
+                        <div>
+                            <?php if ($message): ?>
+                                <div class="alert <?= "alert-{$message['type']}" ?>">
+                                    <?= $message['str'] ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <div>
+                            <?= $content ?>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -4,16 +4,14 @@ $(document).ready(function () {
         var category = function ()
         {
             var s = `
-            <li><a href="/user/category/create/category/${oitem.id}"><span class="fa fa-folder"></span> Tạo thư mục con </a></li>
-            <li><a href="/user/category/create/exam/${oitem.id}"><span class="fa fa-file"></span> Tạo đề thi </a></li>            
+            <li><a href="/user/category/${oitem.id}/create"><span class="fa fa-folder"></span> Tạo thư mục con </a></li>
 `;
             if (oitem.id)
             {
                 s += `
-            <li><a href="/user/category/create/category/${oitem.id}"><span class="fa fa-folder"></span> Tạo thư mục con </a></li>
-            <li><a href="/user/category/create/exam/${oitem.id}"><span class="fa fa-file"></span> Tạo đề thi </a></li>
-            <li><a href="/user/category/edit/${oitem.id}"><span class="fa fa-edit"></span> Sửa danh mục </a></li>
-            <li><a href="/user/category/delete/${oitem.id}"><span class="fa fa-remove"></span> Xóa danh mục này </a></li>
+            <li><a href="/user/category/${oitem.id}/create?type=exam"><span class="fa fa-file"></span> Tạo đề thi </a></li>
+            <li><a href="/user/category/${oitem.id}/edit"><span class="fa fa-edit"></span> Sửa danh mục </a></li>
+            <li><a href="/user/category/${oitem.id}/delete" class="be-care"><span class="fa fa-remove"></span> Xóa danh mục này </a></li>      
 `;
             }
             return s;
@@ -32,7 +30,7 @@ $(document).ready(function () {
 `;
         }
         this.toString = function () {
-            switch (oitem.filetype_id)
+            switch (oitem.type_id)
             {
                 case 0:
                 case 1:
@@ -48,7 +46,7 @@ $(document).ready(function () {
         var controls = $('#controls ul');
         var data = [];
         $.ajax({
-            url: '/user/files/rest/treeview',
+            url: '/user/files/0/get/tree',
             method: 'GET',
             async: false,
             dataType: 'json'
@@ -57,7 +55,7 @@ $(document).ready(function () {
                     text: ' Thư mục gốc',
                     href: 'javascript:void(0)',
                     data: {
-                        filetype_id: 0,
+                        type_id: 0,
                         id: 0
                     },
                     nodes: d

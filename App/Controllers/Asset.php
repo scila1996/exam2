@@ -16,7 +16,7 @@ class Asset extends Controller
     public function index($file)
     {
         $response = $this->response->withHeader('Content-Type', Mime::TYPES[
-                pathinfo($this->view->setFileExtension('')->set($file)->file, PATHINFO_EXTENSION)
+                pathinfo($this->view->setFileExtension('')->set($file, $this->request->getQueryParams())->file, PATHINFO_EXTENSION)
         ]);
         $response->write($this->view->getContent());
         return $response;
