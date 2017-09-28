@@ -3,6 +3,7 @@
 namespace App\Controllers\Users;
 
 use App\Models\Users\FileManagement\Manage;
+use App\Models\Users\FileManagement\CKEditor;
 use PDOException;
 
 class FileCtrl extends MainCtrl
@@ -24,7 +25,7 @@ class FileCtrl extends MainCtrl
     public function index()
     {
         $this->view['content'] = $this->view->template('user/files/main');
-        $this->view['message'] = $this->session->splice('message');
+        $this->view['message'] = $this->getMessage();
         $this->view['category'] = 'Quản lý danh mục';
     }
 
@@ -44,9 +45,8 @@ class FileCtrl extends MainCtrl
                 case 'create':
                     if ($this->request->getQueryParam('type') == 'exam')
                     {
-
                         $data = [
-                            'ckeditor' => $this->view->template('user/plugin/ckeditor/ckeditor')->getContent()
+                            'ckeditor' => new CKEditor($this)
                         ];
                         $this->view['content'] = $this->view->template('user/files/exam/insert', $data);
                         $this->view['category'] = 'Tạo mới một tệp đề thi';
@@ -67,7 +67,7 @@ class FileCtrl extends MainCtrl
                     {
                         if ($this->model->deleteFile($id))
                         {
-                            $this->session->set('message', ['type' => 'success', 'str' => 'Đã xóa thành công.']);
+                            $this->setMessage('success', 'Đã xóa thành công.');
                         }
                         else
                         {
@@ -76,7 +76,7 @@ class FileCtrl extends MainCtrl
                     }
                     catch (PDOException $e)
                     {
-                        $this->session->set('message', ['type' => 'warning', 'str' => 'Dữ liệu trong thư mục vẫn còn, không thể xóa.']);
+                        $this->setMessage('warning', 'Dữ liệu trong thư mục vẫn còn, không thể xóa.');
                     }
                     $this->redirect('/user/files');
                     break;
@@ -93,7 +93,7 @@ class FileCtrl extends MainCtrl
                         {
                             if ($this->model->createExam($id))
                             {
-                                $this->session->set('message', ['type' => 'success', 'str' => 'Đã tạo mới một đề thi.']);
+                                $this->setMessage('success', 'Đã tạo mới một đề thi.');
                             }
                         }
                     }
@@ -103,7 +103,7 @@ class FileCtrl extends MainCtrl
                         {
                             if ($this->model->createFolder($id))
                             {
-                                $this->session->set('message', ['type' => 'success', 'str' => 'Đã tạo mới một thư mục.']);
+                                $this->setMessage('success', 'Đã tạo mới một thư mục.');
                             }
                         }
                     }
@@ -113,7 +113,7 @@ class FileCtrl extends MainCtrl
                     {
                         if ($this->model->updateFolder($id))
                         {
-                            $this->session->set('message', ['type' => 'success', 'str' => 'Đã chỉnh sửa thành công.']);
+                            $this->setMessage('success', 'Đã chỉnh sửa thành công.');
                         }
                     }
                     break;
@@ -129,7 +129,48 @@ class FileCtrl extends MainCtrl
      */
     public function exam($id, $action)
     {
-        
+        if ($this->request->isGet())
+        {
+            switch ($action)
+            {
+                case 'edit':
+                    $data = [
+                        'ckeditor' => new CKEditor($this),
+                        'data' => $this->model->getExam($id)
+                    ];
+                    $this->view['content'] = $this->view->template('user/files/exam/update', $data);
+                    $this->view['category'] = 'Chỉnh sửa thông tin đề thi';
+                    break;
+                case 'delete':
+                    if ($this->model->deleteExam($id))
+                    {
+                        $this->setMessage('success', 'Đã xóa thành công.');
+                    }
+                    else
+                    {
+                        return $this->response->withStatus(404);
+                    }
+                    return $this->redirect('/user/files');
+            }
+        }
+        if ($this->request->isPost())
+        {
+            switch ($action)
+            {
+
+                case 'edit':
+                    //return 123;
+                    if ($this->request->isPost())
+                    {
+                        if ($this->model->updateExam($id))
+                        {
+                            $this->setMessage('success', 'Đã chỉnh sửa thành công.');
+                        }
+                    }
+                    break;
+            }
+            return $this->redirect('/user/files');
+        }
     }
 
 }

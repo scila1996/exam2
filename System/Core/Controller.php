@@ -56,7 +56,8 @@ class Controller
     /**
      * 
      * @param string $link
-     * @param array|object $params
+     * @param object|array $params
+     * @return \System\Libraries\Http\Messages\Response
      */
     protected function redirect($link, $params = null)
     {

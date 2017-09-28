@@ -3,62 +3,29 @@
 namespace App\Models\Users\FileManagement;
 
 use System\Core\Controller;
-use App\Models\DataTable;
 use System\Libraries\Database\DB;
-use App\Models\Session;
+use System\Core\Model;
 
-class Manage extends DataTable
+class Manage extends Model
 {
-
-    const CATEGORY = 1;
-    const EXAM = 2;
 
     /**
      *
-     * @var \System\Libraries\Database\Query\Builder
+     * @var File
      */
-    public $query = null;
+    public $files = null;
+
+    /**
+     *
+     * @var Exam
+     */
+    public $exam = null;
 
     public function __construct(Controller $controller)
     {
         parent::__construct($controller);
-        $this->query = DB::query()->table($this->tableName())
-                ->select("{$this->tableName()}.*")
-                ->where("{$this->tableName()}.user_id", $this->controller->session->get(Session::USER_AUTH)->id);
-    }
-
-    /**
-     * 
-     * @return string
-     */
-    public function tableName()
-    {
-        return 'files';
-    }
-
-    /**
-     * 
-     * @param string|integer $parent
-     * @param string|integer $type
-     * @return int
-     */
-    public function createFile($parent, $type = self::CATEGORY)
-    {
-        $name = $this->controller->request->getParsedBodyParam('name');
-        $parent_id = $parent == 0 ? null : $parent;
-        $user_id = $this->controller->session->get(Session::USER_AUTH)->id;
-        $type_id = $type;
-        $query = $this->query->insert([
-            'name' => $name,
-            'parent_id' => $parent_id,
-            'user_id' => $user_id,
-            'type_id' => $type_id
-        ]);
-        if (DB::execute($query))
-        {
-            return DB::connection()->getPdo()->lastInsertId();
-        }
-        return 0;
+        $this->files = new File($controller);
+        $this->exam = new Exam($controller);
     }
 
     /**
@@ -68,7 +35,7 @@ class Manage extends DataTable
      */
     public function createFolder($parent)
     {
-        return $this->createFile($parent);
+        return DB::execute($this->files->create($parent));
     }
 
     /**
@@ -78,7 +45,27 @@ class Manage extends DataTable
      */
     public function getFolder($id)
     {
-        return DB::execute($this->query->select()->where('id', $id))->first();
+        return DB::execute($this->files->get($id))->first();
+    }
+
+    /**
+     * 
+     * @param integer|string $id
+     * @return object
+     */
+    public function getExam($id)
+    {
+        return DB::execute($this->exam->get($id))->first();
+    }
+
+    /**
+     * 
+     * @param integer|string $id
+     * @return integer
+     */
+    public function updateExam($id)
+    {
+        return DB::execute($this->exam->update($id));
     }
 
     /**
@@ -88,11 +75,7 @@ class Manage extends DataTable
      */
     public function updateFolder($id)
     {
-        $name = $this->controller->request->getParsedBodyParam('name');
-        $query = $this->query->update([
-                    'name' => $name
-                ])->where('id', $id);
-        return DB::execute($query);
+        return DB::execute($this->files->update($id));
     }
 
     /**
@@ -102,7 +85,7 @@ class Manage extends DataTable
      */
     public function deleteFile($id)
     {
-        return DB::execute($this->query->delete()->where('id', $id));
+        return DB::execute($this->files->delete($id, File::CATEGORY));
     }
 
     /**
@@ -112,20 +95,19 @@ class Manage extends DataTable
      */
     public function createExam($category_id)
     {
-        DB::begin();
-        $file_id = $this->createFile($category_id, self::EXAM);
+        //DB::begin();
+        $query = $this->exam->create($category_id);
+        return DB::execute($query);
+    }
 
-        $data = [
-            'file_id' => $file_id,
-            'header' => $this->controller->request->getParsedBodyParam('header'),
-            'footer' => $this->controller->request->getParsedBodyParam('footer'),
-            'date' => $this->controller->request->getParsedBodyParam('event') ?
-            $this->controller->request->getParsedBodyParam('date') : null
-        ];
-        $query = DB::query()->table('exam')->insert($data);
-        $r = DB::execute($query);
-        DB::commit();
-        return $r;
+    /**
+     * 
+     * @param integer|string $id
+     * @return integer
+     */
+    public function deleteExam($id)
+    {
+        return DB::execute($this->exam->delete($id));
     }
 
     /**
@@ -136,14 +118,7 @@ class Manage extends DataTable
     public function getTreeView($parent = null)
     {
         $data = [];
-        $query = clone $this->query;
-        $list = DB::execute($query->selectRaw('count(b.parent_id) as c')
-                                ->leftJoin('files as b', 'b.parent_id', '=', "{$this->tableName()}.id")
-                                ->where("{$this->tableName()}.parent_id", $parent)
-                                ->groupBy("{$this->tableName()}.id")
-        );
-        //return $this->query->toSql();
-        foreach ($list as $file)
+        foreach (DB::execute($this->files->listFromParent($parent)) as $file)
         {
             $item = [
                 'text' => $file->name,

@@ -32,6 +32,7 @@ Config::$route->group(['before' => 'login'], function(RouteCollector $routers) {
     $routers->any('/user/category/{id:\d+}/{action:create|edit|delete}', ['Users\\FileCtrl', 'category']);
 
     // Exam manage
+    $routers->any('/user/exam/{id:\d+}/{action:edit|delete}', ['Users\\FileCtrl', 'exam']);
 
     $routers->get('/user/logout', ['Users\\LoginCtrl', 'logout']);
 });

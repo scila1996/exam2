@@ -11,7 +11,7 @@ $(document).ready(function () {
                 s += `
             <li><a href="/user/category/${oitem.id}/create?type=exam"><span class="fa fa-file"></span> Tạo đề thi </a></li>
             <li><a href="/user/category/${oitem.id}/edit"><span class="fa fa-edit"></span> Sửa danh mục </a></li>
-            <li><a href="/user/category/${oitem.id}/delete" class="be-care"><span class="fa fa-remove"></span> Xóa danh mục này </a></li>      
+            <li><a href="/user/category/${oitem.id}/delete?type=${oitem.type_id}" class="be-care"><span class="fa fa-remove"></span> Xóa danh mục này </a></li>      
 `;
             }
             return s;
@@ -20,13 +20,13 @@ $(document).ready(function () {
         {
             return `
             <li><a href="/user/exam/${oitem.id}"><span class="fa fa-cog"></span> Quản lý </a></li>
-            <li><a href="/user/exam/edit/${oitem.id}"><span class="fa fa-pencil"></span> Chỉnh sửa </a></li>
-            <li><a href="/user/exam/share/${oitem.id}"><span class="fa fa-share"></span> Chia sẻ </a></li>
-            <li><a href="/user/exam/copy/${oitem.id}"><span class="fa fa-copy"></span> Sao chép </a></li>
-            <li><a href="/user/exam/merge/${oitem.id}"><span class="fa fa-download"></span> Bốc câu hỏi </a></li>
-            <li><a href="/user/exam/shuffle/${oitem.id}"><span class="fa fa-random"></span> Xáo trộn </a></li>
-            <li><a href="/user/exam/publish/${oitem.id}" target="_blank"><span class="fa fa-list-alt"></span> Xuất bản </a></li>
-            <li><a href="/user/exam/delete/${oitem.id}" class="be-care"><span class="fa fa-trash"></span> Xóa </a></li>
+            <li><a href="/user/exam/${oitem.id}/edit"><span class="fa fa-pencil"></span> Chỉnh sửa </a></li>
+            <li><a href="/user/exam/${oitem.id}/share"><span class="fa fa-share"></span> Chia sẻ </a></li>
+            <li><a href="/user/exam/${oitem.id}/copy"><span class="fa fa-copy"></span> Sao chép </a></li>
+            <li><a href="/user/exam/${oitem.id}/merge"><span class="fa fa-download"></span> Bốc câu hỏi </a></li>
+            <li><a href="/user/exam/${oitem.id}/shuffle"><span class="fa fa-random"></span> Xáo trộn </a></li>
+            <li><a href="/user/exam/${oitem.id}/publish" target="_blank"><span class="fa fa-list-alt"></span> Xuất bản </a></li>
+            <li><a href="/user/exam/${oitem.id}/delete?type=${oitem.type_id}" class="be-care"><span class="fa fa-trash"></span> Xóa </a></li>
 `;
         }
         this.toString = function () {
@@ -79,6 +79,6 @@ $(document).ready(function () {
             }
         });
         tree.treeview('expandAll', {levels: 5, silent: false});
-        tree.treeview('selectNode', 1, {silent: false});
+        tree.treeview('selectNode', 0, {silent: false});
     })();
 });

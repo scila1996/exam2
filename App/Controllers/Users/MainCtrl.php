@@ -32,4 +32,14 @@ class MainCtrl extends Controller
         $this->view['menu'] = (object) array_fill_keys(array_keys((array) $this->view['url']), null);
     }
 
+    public function setMessage($type, $text)
+    {
+        $this->session->set('message', ['type' => $type, 'str' => $text]);
+    }
+
+    public function getMessage()
+    {
+        return $this->session->splice('message');
+    }
+
 }

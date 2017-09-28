@@ -3,14 +3,17 @@
 namespace App\Models;
 
 use System\Core\Model;
-use System\Core\Controller;
-use System\Libraries\Database\DB;
+use ErrorException;
 
-abstract class DataTable extends Model
+class DataTable extends Model
 {
 
     /**
      * @return string
      */
-    abstract public function tableName();
+    public static function tableName()
+    {
+        throw new ErrorException('table name is not define');
+    }
+
 }

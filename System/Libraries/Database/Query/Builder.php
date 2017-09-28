@@ -1624,11 +1624,12 @@ class Builder
     /**
      * Delete a record from the database.
      *
+     * @param string|array|Expression $tables
      * @return $this
      */
-    public function delete()
+    public function delete($tables = null)
     {
-        $this->compile = __FUNCTION__;
+        $this->{$this->compile = __FUNCTION__} = $tables;
         return $this;
     }
 

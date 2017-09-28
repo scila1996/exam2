@@ -4,11 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/xampp/htdocs/exam/App/Models/Users/FileManagement/Manage.php</file>
-            <file>file:/C:/xampp/htdocs/exam/App/Views/user/files/js/app.js</file>
-            <file>file:/C:/xampp/htdocs/exam/App/Views/user/plugin/ckeditor/ckeditor.php</file>
-            <file>file:/C:/xampp/htdocs/exam/App/Views/user/files/exam/insert.php</file>
+            <file>file:/C:/xampp/htdocs/exam/App/Models/Users/FileManagement/File.php</file>
+            <file>file:/C:/xampp/htdocs/exam/App/Models/Users/FileManagement/Exam.php</file>
             <file>file:/C:/xampp/htdocs/exam/App/Config/Route.php</file>
-            <file>file:/C:/xampp/htdocs/exam/App/Views/user/files/exam/js/form.js</file>
+            <file>file:/C:/xampp/htdocs/exam/App/Controllers/TestCtrl.php</file>
             <file>file:/C:/xampp/htdocs/exam/App/Controllers/Users/FileCtrl.php</file>
         </group>
     </open-files>
