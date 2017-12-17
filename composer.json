@@ -1,0 +1,16 @@
+{
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "require": {
+        "phroute/phroute": "^2.1",
+        "guzzlehttp/guzzle": "^6.3",
+        "symfony/dom-crawler": "3.4",
+        "phpmailer/phpmailer": "^6.0",
+        "illuminate/database": "5.4",
+        "illuminate/session": "5.4",
+        "illuminate/events": "5.4"
+    }
+}
