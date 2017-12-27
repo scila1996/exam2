@@ -15,6 +15,9 @@ class Controller
     /** @var \Psr\Http\Message\ServerRequestInterface */
     protected $request = null;
 
+    /** @var \Symfony\Component\HttpFoundation\Session\Session */
+    protected $session = null;
+
     /** @var \Psr\Http\Message\ResponseInterface */
     protected $response = null;
 

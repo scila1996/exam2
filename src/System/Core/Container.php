@@ -13,6 +13,12 @@ class Container
 
     /**
      *
+     * @var \Symfony\Component\HttpFoundation\Session\Session
+     */
+    public $session = null;
+
+    /**
+     *
      * @var \Psr\Http\Message\ResponseInterface
      */
     public $response = null;

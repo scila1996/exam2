@@ -4,6 +4,7 @@ namespace System\Core;
 
 use GuzzleHttp\Psr7\ServerRequest;
 use GuzzleHttp\Psr7\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Phroute\Phroute\RouteCollector;
 use Phroute\Phroute\Dispatcher;
 use Illuminate\Database\Capsule\Manager;
@@ -50,6 +51,7 @@ class App
             $container = new Container();
             $request = $container->request = ServerRequest::fromGlobals();
             $response = $container->response = new Response();
+            $session = $container->session = new Session();
             $view = $container->view = (new View())->setTemplateDir(self::$path['view']);
 
             Config::$route = new RouteCollector();

@@ -19,7 +19,7 @@ class Config
 
     /**
      *
-     * @var \System\Libraries\Router\RouteCollector
+     * @var \Phroute\Phroute\RouteCollector
      */
     public static $route = null;
 
@@ -38,5 +38,11 @@ class Config
         'database' => '',
         'prefix' => ''
     ];
+
+    /**
+     *
+     * @var array
+     */
+    public static $session = [];
 
 }
