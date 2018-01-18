@@ -2,27 +2,20 @@
 
 namespace System\Core;
 
-use System\Core\Container;
+use GuzzleHttp;
+use GuzzleHttp\Psr7;
 
 /**
  * @property-read \Psr\Http\Message\ServerRequestInterface $request
  * @property-read \Psr\Http\Message\ResponseInterface $response
- * @property-read View $view
+ * @property-read \Symfony\Component\HttpFoundation\Session\Session $session
+ * @property-read \System\Libraries\View\View $view
  */
 class Controller
 {
 
-    /** @var \Psr\Http\Message\ServerRequestInterface */
-    protected $request = null;
-
-    /** @var \Symfony\Component\HttpFoundation\Session\Session */
-    protected $session = null;
-
-    /** @var \Psr\Http\Message\ResponseInterface */
-    protected $response = null;
-
-    /** @var \System\Libraries\View\View */
-    protected $view = null;
+    /** @var Container */
+    private $container = null;
 
     /**
      * 
@@ -30,10 +23,7 @@ class Controller
      */
     final public function __construct(Container $container)
     {
-        foreach ($container as $prop => $obj)
-        {
-            $this->{$prop} = $obj;
-        }
+        $this->container = $container;
     }
 
     /**
@@ -43,32 +33,48 @@ class Controller
      */
     final public function __get($name)
     {
-        return isset($this->{$name}) ? $this->{$name} : null;
+        return $this->container->{$name};
     }
 
     /**
-     * This method can override.
      * 
-     * @return $this
+     * @param mixed $json_data
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __init()
+    final public function json($json_data)
     {
-        return $this;
+        $response = $this->response->withHeader('Content-Type', Psr7\mimetype_from_extension('json'));
+        $response->getBody()->write(GuzzleHttp\json_encode($json_data));
+        return $response;
     }
 
     /**
      * 
      * @param string $link
-     * @param object|array $params
+     * @param array $params
      * @return \Psr\Http\Message\ResponseInterface
      */
-    protected function redirect($link, $params = null)
+    final public function redirect($link, array $params = [])
     {
-        if ($params !== null)
+        if ($params)
         {
-            $link .= '?' . http_build_query($params);
+            $link .= '?' . Psr7\build_query($params);
         }
-        return $this->response = $this->response->withHeader('Location', $link);
+
+        return $this->response->withHeader('Location', $link);
+    }
+
+    /**
+     * This method can override.
+     */
+    public function __init()
+    {
+        
+    }
+
+    public function index()
+    {
+        return $this->json('Override this method to render your content.');
     }
 
 }

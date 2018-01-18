@@ -2,6 +2,8 @@
 
 namespace System\Libraries\View;
 
+use System\Libraries\View\Exception\FileNotFoundException;
+
 class View extends File
 {
 
@@ -40,7 +42,7 @@ class View extends File
      */
     public function setFileExtension($extension)
     {
-        $this->fileExt = $extension;
+        $this->fileExt = $extension ? ".{$extension}" : NULL;
         return $this;
     }
 
@@ -66,11 +68,22 @@ class View extends File
      */
     public function set($file, $data = null)
     {
-        $this->file = $this->getViewPath($file);
+        $file = $this->getViewPath($file);
+
+        if (!file_exists($file))
+        {
+            throw new FileNotFoundException($file);
+        }
+        else
+        {
+            $this->file = $file;
+        }
+
         if ($data !== null)
         {
             $this->data = $data;
         }
+
         return $this;
     }
 

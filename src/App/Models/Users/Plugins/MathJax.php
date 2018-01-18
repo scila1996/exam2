@@ -7,13 +7,9 @@ use System\Core\Model;
 class MathJax extends Model
 {
 
-    /**
-     * 
-     * @return string
-     */
-    public function __toString()
+    public static function load(View $view)
     {
-        return $this->controller->view->template('plugin/mathjax')->getContent();
+        return $view->template('ext/mathjax');
     }
 
 }

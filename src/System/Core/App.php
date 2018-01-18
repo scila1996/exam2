@@ -17,13 +17,9 @@ class App
 {
 
     /** @var array */
-    public static $namespace = [
-        'controller' => '\\App\\Controllers'
-    ];
-
-    /** @var array */
     public static $path = [
-        'view' => 'src/App/Views'
+        'view' => 'src/App/Views',
+        'controller' => '\\App\\Controllers'
     ];
 
     /** @var array */
@@ -51,8 +47,8 @@ class App
             $container = new Container();
             $request = $container->request = ServerRequest::fromGlobals();
             $response = $container->response = new Response();
-            $session = $container->session = new Session();
             $view = $container->view = (new View())->setTemplateDir(self::$path['view']);
+            $container->session = new Session();
 
             Config::$route = new RouteCollector();
 
@@ -66,7 +62,7 @@ class App
                 self::databaseconfig();
             }
 
-            $handler = new Handler($container, self::$namespace['controller']);
+            $handler = new Handler($container, self::$path['controller']);
             $dispatcher = new Dispatcher(Config::$route->getData(), $handler);
             $data = $dispatcher->dispatch(
                     $request->getMethod(), $request->getUri()->getPath()
@@ -78,24 +74,23 @@ class App
             }
             else
             {
-                $response = $handler->controller->response;
                 $response->getBody()->write($data ? strval($data) : $handler->controller->view->getContent());
             }
 
             if ($response->getStatusCode() == 404)
             {
-                throw new HttpRouteNotFoundException('404 not found');
+                throw new HttpRouteNotFoundException($response->getReasonPhrase());
             }
         }
         catch (HttpRouteNotFoundException $e)
         {
             $response = $response->withStatus(404);
-            $response->getBody()->write($view->set('error/404')->render());
+            $response->getBody()->write($view->setFileExtension('php')->set('error/404')->render());
         }
         catch (Exception $e)
         {
-            $view->setFileExtension('.php');
-            $view->set('error/exception')['e'] = $e;
+            $view->setFileExtension('php');
+            $view->set('error/' . ['log', 'debug'][intval(boolval(Config::$debug))])['e'] = $e;
             $response->getBody()->write($view->render());
         }
 
@@ -104,18 +99,6 @@ class App
 
     protected static function sysconfig()
     {
-        // Debug mode
-        if (Config::$debug)
-        {
-            error_reporting(E_ALL);
-            ini_set('display_errors', '1');
-        }
-        else
-        {
-            error_reporting(0);
-            ini_set('display_errors', '0');
-        }
-
         // TimeZone
         date_default_timezone_set(Config::$timezone);
     }

@@ -3,17 +3,11 @@
 namespace App\Controllers\Users;
 
 use System\Core\Controller;
-use App\Models\Users\Login;
-use App\Models\Session;
+use App\Models\Users\Courses;
+use App\Models\Users\Users;
 
 class LoginCtrl extends Controller
 {
-
-    /**
-     *
-     * @var Session
-     */
-    protected $session = null;
 
     /**
      * @var Login
@@ -22,37 +16,40 @@ class LoginCtrl extends Controller
 
     public function __init()
     {
-        $this->session = new Session();
-        $this->model = new Login($this);
+        if (!$this->session->isStarted())
+        {
+            $this->session->start();
+        }
     }
 
     public function index()
     {
         $this->view->set('user/login');
-        $this->view['courses'] = $this->model->getListCourses();
-        $this->view['message'] = $this->session->splice('message');
+        $this->view['courses'] = Courses::all();
+        $this->view['flashmsg'] = $this->session->getFlashBag()->all();
     }
 
-    public function doPOST()
+    public function do_submit()
     {
+        $data = $this->request->getParsedBody();
 
-        if (($result = $this->model->attemp()))
+        if (($result = Users::login($data['username'], $data['password'], $data['courseid'])))
         {
-            $this->session->set(Session::USER_AUTH, $result);
+            $this->session->set(MiddleWare::USER, $result);
         }
         else
         {
-            $this->session->set('message', ['type' => 'danger', 'str' => 'Sai tên tài khoản hoặc mật khẩu.']);
+            $this->session->getFlashBag()->add('warning', 'Dữ liệu đăng nhập người dùng không chính xác hoặc không tồn tại, vui lòng thử lại.');
         }
 
         // redirect current URL
-        return $this->response->withHeader('Location', $this->request->getUri());
+        return $this->redirect($this->request->getUri());
     }
 
     public function logout()
     {
-        $this->session->delete(Session::USER_AUTH);
-        return $this->response->withHeader('Location', '/user/login');
+        $this->session->remove(MiddleWare::USER);
+        return $this->redirect('/user/login');
     }
 
 }

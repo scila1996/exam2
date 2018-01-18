@@ -3,41 +3,39 @@
 namespace App\Controllers\Users;
 
 use System\Core\Controller;
-use App\Models\Session;
 
 class MiddleWare extends Controller
 {
 
-    /**
-     *
-     * @var Session 
-     */
-    protected $session = null;
+    const USER = 'user';
 
     public function __init()
     {
-        $this->session = new Session();
-    }
-
-    public function requireLogin()
-    {
-        if (!$this->isLogin())
+        if ($this->session->isStarted())
         {
-            return $this->response->withHeader('Location', '/user/login');
+            $this->session->start();
         }
     }
 
-    public function validLogin()
+    public function require_login()
+    {
+        if (!$this->isLogin())
+        {
+            return $this->redirect('/user/login');
+        }
+    }
+
+    public function valid_login()
     {
         if ($this->isLogin())
         {
-            return $this->response->withHeader('Location', '/');
+            return $this->redirect('/');
         }
     }
 
     public function isLogin()
     {
-        return $this->session->has(Session::USER_AUTH);
+        return $this->session->has(self::USER);
     }
 
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Bootstrap Example</title>
+        <title> Page for testing </title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -18,9 +18,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-4">
-                    <h3>Column 1</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+                    <h3> Test Case </h3>
+                    <p><b> {{test}} </b></p>
+                    <p> {{data}} </p>
                 </div>
                 <div class="col-sm-4">
                     <h3>Column 2</h3>

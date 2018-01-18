@@ -3,9 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/exam2/src/App/Models/Users.php</file>
-            <file>file:/C:/xampp/htdocs/exam2/src/App/Controllers/TestCtrl.php</file>
-            <file>file:/C:/xampp/htdocs/exam2/src/App/Models/Files.php</file>
+            <file>file:/C:/xampp/htdocs/exam2/src/App/Models/Users/FileManagement/Files.php</file>
+            <file>file:/C:/xampp/htdocs/exam2/src/App/Views/user/profile/info.php</file>
+            <file>file:/C:/xampp/htdocs/exam2/src/App/Models/Users/FileManagement/Exams.php</file>
+            <file>file:/C:/xampp/htdocs/exam2/src/App/Views/user/profile/menu.php</file>
+            <file>file:/C:/xampp/htdocs/exam2/src/App/Views/user/profile/edit.php</file>
+            <file>file:/C:/xampp/htdocs/exam2/src/App/Config/Route.php</file>
+            <file>file:/C:/xampp/htdocs/exam2/src/App/Models/Users/FileManagement/Manager.php</file>
+            <file>file:/C:/xampp/htdocs/exam2/src/App/Controllers/Users/MainCtrl.php</file>
+            <file>file:/C:/xampp/htdocs/exam2/src/App/Views/user/profile/chpw.php</file>
+            <file>file:/C:/xampp/htdocs/exam2/src/App/Controllers/Users/FileCtrl.php</file>
+            <file>file:/C:/xampp/htdocs/exam2/src/App/Controllers/Users/ProfileCtrl.php</file>
+            <file>file:/C:/xampp/htdocs/exam2/src/App/Models/Users/Users.php</file>
         </group>
     </open-files>
 </project-private>

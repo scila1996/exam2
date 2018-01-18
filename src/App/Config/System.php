@@ -1,6 +1,6 @@
 <?php
 
-// use System\Core\Config;
+use System\Core\Config;
 
-// Config::$debug = true;
+Config::$debug = false;
 // Config::$timezone = 'Asia/Ho_Chi_Minh';

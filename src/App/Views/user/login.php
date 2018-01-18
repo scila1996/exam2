@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />        
-        <link rel="stylesheet" href="/libs/page/css/main.css" />
+        <link rel="stylesheet" href="/asset/page/css/main.css" />
         <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <title> Đăng nhập hệ thống </title>
@@ -20,11 +20,16 @@
                                 <strong> Đăng nhập vào ứng dụng </strong>
                             </div>
                             <div class="panel-body">
-                                <?php if ($message): ?>
-                                    <div class="alert <?= "alert-{$message['type']}" ?>">
-                                        <?= $message['str'] ?>
-                                    </div>
-                                <?php endif; ?>
+                                <?php
+                                foreach ($flashmsg as $type => $messages):
+                                    foreach ($messages as $message):
+                                        ?>
+                                        <div class="alert <?= "alert-{$type}" ?>"> <?= $message ?> </div>
+                                        <?php
+                                    endforeach;
+                                endforeach;
+                                ?>
+
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="fa fa-user"></span></span>

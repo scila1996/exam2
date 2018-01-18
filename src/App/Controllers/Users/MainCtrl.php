@@ -3,16 +3,9 @@
 namespace App\Controllers\Users;
 
 use System\Core\Controller;
-use App\Models\Session;
 
 class MainCtrl extends Controller
 {
-
-    /**
-     *
-     * @var Session
-     */
-    protected $session = null;
 
     /**
      *
@@ -22,31 +15,30 @@ class MainCtrl extends Controller
 
     public function __init()
     {
+        if (!$this->session->isStarted())
+        {
+            $this->session->start();
+        }
 
-        $this->session = new Session();
-        $this->user = $this->session->get(Session::USER_AUTH);
+        $this->user = $this->session->get(MiddleWare::USER);
         $this->view->set('user/template');
         $this->view['user'] = $this->user;
         $this->view['title'] = 'Dashboard';
-        $this->view['category'] = 'Home';
-        $this->view['message'] = null;
-        $this->view['content'] = 'no content';
+        $this->view['category'] = 'Tiêu đề';
+        $this->view['flashmsg'] = $this->session->getFlashBag()->all();
+        $this->view['content'] = 'Chức năng đang xử lý ...';
+        $this->view['alert'] = 'Hệ thống đang được phát triển và đang trong quá trình hoàn thiện, vui lòng đóng góp ý kiến thêm !';
         $this->view['url'] = (object) [
                     'home' => '/',
                     'files' => '/user/files',
-                    'logout' => '/user/logout'
+                    'about' => 'javascript:void(0)'
         ];
         $this->view['menu'] = (object) array_fill_keys(array_keys((array) $this->view['url']), null);
     }
 
-    public function setMessage($type, $text)
+    public function index()
     {
-        $this->session->set('message', ['type' => $type, 'str' => $text]);
-    }
-
-    public function getMessage()
-    {
-        return $this->session->splice('message');
+        
     }
 
 }

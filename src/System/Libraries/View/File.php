@@ -2,9 +2,10 @@
 
 namespace System\Libraries\View;
 
+use ArrayObject;
 use ArrayAccess;
 use Exception;
-use System\Libraries\View\Exception\FileNotFoundException;
+use System\Libraries\View\Exception\ErrorException;
 
 /**
  * @property-read string $file
@@ -12,6 +13,9 @@ use System\Libraries\View\Exception\FileNotFoundException;
  */
 class File implements ArrayAccess
 {
+
+    /** @var ArrayObject */
+    protected static $globals = null;
 
     /** @var string */
     protected $file = '';
@@ -39,7 +43,7 @@ class File implements ArrayAccess
     protected function replaceTemplateTags($html)
     {
         $pattern = "#\{{2}\s*([^{}\s]+)\s*\}{2}#";
-        $replace = '<?= (isset($$1)) ? $$1 : "NULL" ?>';
+        $replace = '<?= (isset($$1)) ? $$1 : "<em>NULL</em>" ?>';
         return preg_replace($pattern, $replace, $html);
     }
 
@@ -49,9 +53,9 @@ class File implements ArrayAccess
      */
     public function render()
     {
-        foreach ((array) $this->data as $variable => $value)
+        foreach (array_merge((array) $this->globals(), (array) $this->data) as $variable => $value)
         {
-            $$variable = ($value instanceof self ? $value->render() : $value);
+            $$variable = $value;
         }
 
         ob_start();
@@ -62,10 +66,23 @@ class File implements ArrayAccess
         }
         catch (Exception $ex)
         {
-            throw new FileNotFoundException($ex->getMessage(), $ex->getCode());
+            throw new ErrorException($ex->getMessage(), $ex->getCode());
         }
 
         return ob_get_clean();
+    }
+
+    /**
+     * 
+     * @return ArrayObject
+     */
+    public function globals()
+    {
+        if (!(self::$globals instanceof ArrayObject))
+        {
+            self::$globals = new ArrayObject();
+        }
+        return self::$globals;
     }
 
     public function offsetExists($offset)

@@ -3,17 +3,16 @@
 namespace App\Models\Users\Plugins;
 
 use System\Core\Model;
+use System\Libraries\View\View;
 
 class CKEditor extends Model
 {
 
-    /**
-     * 
-     * @return string
-     */
-    public function __toString()
+    public static function load(View $view, array $plugins = [])
     {
-        return $this->controller->view->template('plugin/ckeditor/ckeditor')->getContent();
+        return $view->template('ext/ckeditor', [
+                    'plugins' => implode(',', $plugins)
+        ]);
     }
 
 }

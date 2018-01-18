@@ -14,15 +14,15 @@ class Handler implements HandlerResolverInterface
 {
 
     /** @var Container */
-    protected $container = null;
+    private $container = null;
 
     /** @var string */
-    protected $namespace = '';
+    private $namespace = null;
 
     /** @var Controller */
-    protected $controller = null;
+    private $controller = null;
 
-    public function __construct(Container $container, $namespace = '')
+    public function __construct(Container $container, $namespace)
     {
         $this->container = $container;
         $this->namespace = $namespace;
@@ -39,10 +39,10 @@ class Handler implements HandlerResolverInterface
         {
             if (count($handler) < 2)
             {
-                $handler[1] = "index";
+                $handler[1] = 'index';
             }
-            $class = "{$this->namespace}\\{$handler[0]}";
-            $this->controller = ($handler[0] = new $class($this->container));
+            $clsCtrl = "{$this->namespace}\\{$handler[0]}";
+            $this->controller = ($handler[0] = new $clsCtrl($this->container));
             $this->controller->__init();
         }
 

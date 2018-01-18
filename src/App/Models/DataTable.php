@@ -3,17 +3,41 @@
 namespace App\Models;
 
 use System\Core\Model;
-use ErrorException;
 
 class DataTable extends Model
 {
 
+    /** @var string */
+    protected static $table = '';
+
+    /** @var \Illuminate\Database\Query\Builder */
+    protected $query = null;
+
     /**
+     * 
      * @return string
      */
-    public static function tableName()
+    final public static function getTable()
     {
-        throw new ErrorException('table name is must be define');
+        return static::$table;
+    }
+
+    /**
+     * 
+     * @return \Illuminate\Database\Query\Builder
+     */
+    final public function getQuery()
+    {
+        return $this->query;
+    }
+
+    /**
+     * 
+     * @return \Illuminate\Database\Query\Builder
+     */
+    final public function copyQuery()
+    {
+        return clone $this->query;
     }
 
 }

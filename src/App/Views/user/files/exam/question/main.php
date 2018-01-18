@@ -2,8 +2,8 @@
 <!--
 here: http://markgx.github.io/jquery-check-all/
 -->
-<script src="/libs/plugin/js/jquery-check-all.min.js"></script>
-<script src="/libs/user/files/exam/question/js/main.js"></script>
+<script src="/asset/plugin/js/jquery-check-all.min.js"></script>
+<script src="/asset/user/files/exam/question/js/main.js"></script>
 <form method="post" class="require-checkbox-from-table">
     <div class="form-group">
         <span class="dropdown">
