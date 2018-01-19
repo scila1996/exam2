@@ -1,6 +1,4 @@
-**
-
-## Phần mềm quản lý câu hỏi đề thi trắc nghiệm.
+﻿## Phần mềm quản lý câu hỏi đề thi trắc nghiệm.
 
 > **Các chức năng chính có trong phần mềm**
 
